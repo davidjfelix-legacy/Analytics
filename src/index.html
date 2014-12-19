@@ -35,6 +35,21 @@ var coords = [
   [39.11104, -84.51536],  // kaze
 ];
 
+function updateHeatMap(coords, map) {
+  var pointArray = new google.maps.MVCArray();
+
+  for (coord in coords) {
+    var latLng = new google.maps.LatLng(coord[0], coord[1])
+    pointArray.push(latLng);
+  }
+
+  var heatMap = google.maps.visualization.HeatMapLayer({
+    data: pointArray
+  });
+  
+  heatMap.set(map);
+}
+
 function initialize() {
   var mapOptions = {
     zoom: 7,
