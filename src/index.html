@@ -1,7 +1,23 @@
 <!Doctype HTML>
 <html>
   <head>
+    <meta charset="utf-8">
+    <title>Analytics -- alpha</title>
+    <style type="text/css">
+      html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization">
+    </script>
+    <script type="text/javascript">
+    </script>
   </head>
   <body>
+    <div id="panel">
+      <button onclick="toggleHeatmap()">Toggle Heatmap</button>
+      <button onclick="changeGradient()">Change gradient</button>
+      <button onclick="changeRadius()">Change radius</button>
+      <button onclick="changeOpacity()">Change opacity</button>
+    </div>
+    <div id="map-canvas"></div>
   </body>
 </html>
