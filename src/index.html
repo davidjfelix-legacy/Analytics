@@ -36,18 +36,18 @@ var coords = [
 ];
 
 function updateHeatMap(coords, map) {
-  var pointArray = new google.maps.MVCArray();
-
-  for (coord in coords) {
-    var latLng = new google.maps.LatLng(coord[0], coord[1])
-    pointArray.push(latLng);
+  var latLngs = [];
+  for (idx in coords) {
+    var latLng = new google.maps.LatLng(coords[idx][0], coords[idx][1]);
+    latLngs.push(latLng);
   }
+  var pointArray = new google.maps.MVCArray(latLngs);
 
-  var heatMap = google.maps.visualization.HeatMapLayer({
+  var heatmap = new google.maps.visualization.HeatmapLayer({
     data: pointArray
   });
   
-  heatMap.set(map);
+  heatmap.setMap(map);
 }
 
 function initialize() {
@@ -60,13 +60,7 @@ function initialize() {
   map = new google.maps.Map(document.getElementById('map-canvas'),
       mapOptions);
 
-  var pointArray = new google.maps.MVCArray(data);
-
-  heatmap = new google.maps.visualization.HeatmapLayer({
-    data: pointArray
-  });
-
-  heatmap.setMap(map);
+  updateHeatMap(coords, map);
 }
 
 function toggleHeatmap() {
