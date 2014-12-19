@@ -23,6 +23,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization">
     </script>
     <script type="text/javascript">
+var heatmap;
 
 var coords = [
   [39.110912, -84.515619],  // the brandery
@@ -43,7 +44,7 @@ function updateHeatMap(coords, map) {
   }
   var pointArray = new google.maps.MVCArray(latLngs);
 
-  var heatmap = new google.maps.visualization.HeatmapLayer({
+  heatmap = new google.maps.visualization.HeatmapLayer({
     data: pointArray
   });
   
