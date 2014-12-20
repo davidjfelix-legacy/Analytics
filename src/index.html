@@ -21,7 +21,7 @@
       }
     </style>
     <script type="text/javascript">
-var heatmap;
+    // Any data that we expect to come from a server goes here
 
 var coords = [
   [39.110912, -84.515619],  // the brandery
@@ -33,6 +33,26 @@ var coords = [
   [39.11104, -84.51536],  // kaze
   [39.11104, -84.51536],  // kaze
 ];
+    </script>
+    <script type="text/javascript">
+
+var AuMap = function(canvas_id) {
+  var mapOptions = {
+    zoom: 14,
+    center: new google.maps.LatLnd(39.103053, -84.508708),
+    mapTypeId: google.maps.MapTypeId.MAP
+  };
+  this.map = new google.maps.Map(document.getElementById(canvas_id), mapOptions);
+}
+
+var AuHeatmap = function(canvas_id) {
+  this.auMap = new AuMap(canvas_id);
+  this.heatmap = new google.maps.visualization.HeatmapLayer();
+  this.heatmap.setMap(this.auMap.map);
+}
+
+var heatmap;
+
 
 function updateHeatMap(coords, map) {
   var latLngs = [];
@@ -62,65 +82,22 @@ function initialize() {
   updateHeatMap(coords, map);
 }
 
-function toggleHeatmap() {
-  heatmap.setMap(heatmap.getMap() ? null : map);
-}
 
-function changeGradient() {
-  var gradient = [
-    'rgba(0, 255, 255, 0)',
-    'rgba(0, 255, 255, 1)',
-    'rgba(0, 191, 255, 1)',
-    'rgba(0, 127, 255, 1)',
-    'rgba(0, 63, 255, 1)',
-    'rgba(0, 0, 255, 1)',
-    'rgba(0, 0, 223, 1)',
-    'rgba(0, 0, 191, 1)',
-    'rgba(0, 0, 159, 1)',
-    'rgba(0, 0, 127, 1)',
-    'rgba(63, 0, 91, 1)',
-    'rgba(127, 0, 63, 1)',
-    'rgba(191, 0, 31, 1)',
-    'rgba(255, 0, 0, 1)'
-  ]
-  heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
-}
-
-function changeRadius() {
-  heatmap.set('radius', heatmap.get('radius') ? null : 20);
-}
-
-function changeOpacity() {
-  heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
-}
-
-var mappedData = function (bind_canvas) {
-}
-
-//mappedData.prototype.initialize = initialize;
-
-function loadGoogleMapsScript() {
+function asyncLoadGoogleMaps() {
   var script = document.createElement('script');
   script.type = 'text/javascript';
   script.src = 'https://maps.googleapis.com/maps/api/js?' +
     'key=AIzaSyCcRYxLFqKNT__Vc2Ou6eJYTchP86NZmks&' +
-    'v=3.exp&' +
     'libraries=visualization&' +
     'callback=initialize';
   document.body.appendChild(script);
 }
 
-window.onload = loadGoogleMapsScript;
+window.onload = asyncLoadGoogleMaps;
 
     </script>
   </head>
   <body>
-    <div id="panel">
-      <button onclick="toggleHeatmap()">Toggle Heatmap</button>
-      <button onclick="changeGradient()">Change gradient</button>
-      <button onclick="changeRadius()">Change radius</button>
-      <button onclick="changeOpacity()">Change opacity</button>
-    </div>
     <div id="map-canvas"></div>
   </body>
 </html>
