@@ -35,53 +35,7 @@ var coords = [
 ];
     </script>
     <script type="text/javascript">
-
-var AuMap = function(canvas_id) {
-  var mapOptions = {
-    zoom: 14,
-    center: new google.maps.LatLnd(39.103053, -84.508708),
-    mapTypeId: google.maps.MapTypeId.MAP
-  };
-  this.map = new google.maps.Map(document.getElementById(canvas_id), mapOptions);
-}
-
-var AuHeatmap = function(canvas_id) {
-  this.auMap = new AuMap(canvas_id);
-  this.heatmap = new google.maps.visualization.HeatmapLayer();
-  this.heatmap.setMap(this.auMap.map);
-}
-
-var heatmap;
-
-
-function updateHeatMap(coords, map) {
-  var latLngs = [];
-  for (idx in coords) {
-    var latLng = new google.maps.LatLng(coords[idx][0], coords[idx][1]);
-    latLngs.push(latLng);
-  }
-  var pointArray = new google.maps.MVCArray(latLngs);
-
-  heatmap = new google.maps.visualization.HeatmapLayer({
-    data: pointArray
-  });
-  
-  heatmap.setMap(map);
-}
-
-function initialize() {
-  var mapOptions = {
-    zoom: 14,
-    center: new google.maps.LatLng(39.103053, -84.508708),
-    mapTypeId: google.maps.MapTypeId.MAP
-  };
-
-  map = new google.maps.Map(document.getElementById('map-canvas'),
-      mapOptions);
-
-  updateHeatMap(coords, map);
-}
-
+// async load code goes here
 
 function asyncLoadGoogleMaps() {
   var script = document.createElement('script');
@@ -103,5 +57,41 @@ window.onload = asyncLoadGoogleMaps;
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+    <script type="text/javascript">
+// "app code" goes here
+var AuMap = Backbone.Model.extend({ //FIXME: Split out view functionality
+  initialize: function(canvas_id) {
+    var mapOptions = {
+      zoom: 14,
+      center: new google.maps.LatLng(39.103053, -84.508708),
+      mapTypeId: google.maps.MapTypeId.MAP
+    };
+    this.map = new google.maps.Map(document.getElementById(canvas_id), mapOptions);
+  }
+});
+
+var AuHeatmap = Backbone.Model.extend({ //FIXME: Split out view functionality
+  initialize: function(canvas_id) {
+    this.auMap = new AuMap(canvas_id);
+    this.heatmap = new google.maps.visualization.HeatmapLayer();
+    this.heatmap.setMap(this.auMap.map);
+  }
+});
+
+function rawCoordsToLatLng(coords) {
+  var latLngs = [];
+  for (idx in coords) {
+    var latLng = new google.maps.LatLng(coords[idx][0], coords[idx][1]);
+    latLngs.push(latLng);
+  }
+  return latLngs;
+}
+
+function initialize() {
+  var hm = new AuHeatmap('map-canvas')
+  hm.heatmap.setData(new google.maps.MVCArray(rawCoordsToLatLng(coords)));
+}
+
+    </script>
   </body>
 </html>
