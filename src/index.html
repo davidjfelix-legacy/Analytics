@@ -59,22 +59,40 @@ window.onload = asyncLoadGoogleMaps;
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
     <script type="text/javascript">
 // "app code" goes here
-var AuMap = Backbone.Model.extend({ //FIXME: Split out view functionality
-  initialize: function(canvas_id) {
-    var mapOptions = {
-      zoom: 14,
-      center: new google.maps.LatLng(39.103053, -84.508708),
-      mapTypeId: google.maps.MapTypeId.MAP
-    };
-    this.map = new google.maps.Map(document.getElementById(canvas_id), mapOptions);
+
+var AuHeatmapPoint = Backbone.Model.extend({
+  defaults: {
+    lat: 0.0,
+    lng: 0.0
+  },
+
+  getLatLngPoint: function() {
+    return new google.maps.LatLng(this.get('lat'), this.get('lng'));
   }
 });
 
-var AuHeatmap = Backbone.Model.extend({ //FIXME: Split out view functionality
-  initialize: function(canvas_id) {
-    this.auMap = new AuMap(canvas_id);
+var AuHeatmapPointArray = Backbone.Collection.extend({
+  model: AuHeatmapPoint,
+
+  getLatLngPointArray: function() {
+    return this.each(auHeatmapPoint.getLatLngPoint);
+  },
+
+  getLatLngPointMVCArray: function() {
+    return new google.maps.MVCArray(this.getLatLngPointArray);
+  }
+});
+
+var AuHeatmapView = Backbone.View.extend({
+  initialize: function(canvas_id, center, zoom) {
+    var mapOptions = {
+      zoom: zoom,
+      center: new google.maps.LatLng(center[0], center[1]),
+      mapTypeId: google.maps.MapTypeId.MAP
+    };
+    this.map = new google.maps.Map(document.getElementById(canvas_id), mapOptions);
     this.heatmap = new google.maps.visualization.HeatmapLayer();
-    this.heatmap.setMap(this.auMap.map);
+    this.heatmap.setMap(this.map);
   }
 });
 
@@ -88,7 +106,7 @@ function rawCoordsToLatLng(coords) {
 }
 
 function initialize() {
-  var hm = new AuHeatmap('map-canvas')
+  var hm = new AuHeatmapView('map-canvas', [39.103053, -84.508708], 14);
   hm.heatmap.setData(new google.maps.MVCArray(rawCoordsToLatLng(coords)));
 }
 
