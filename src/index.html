@@ -185,10 +185,37 @@ $(function(){
 });
 </script>
 
+<script type="text/javascript">
+var driver_data = [
+  {"name": "taylor", "sold": 5},
+  {"name": "jim", "sold": 32},
+  {"name": "david", "sold": 12}
+];
+
+$(function() {
+  data_graphic({
+    title: "Weekly Pizzas Per Driver",
+    description: "How many pizzas did each driver sell this week?",
+    data: driver_data,
+    markers: [
+      {"sold": 10, "label": "average"},
+    ],
+    target: "#drivers",
+    x_accessor: "sold",
+    y_accessor: "name",
+    height: 150,
+    width: 450,
+    chart_type: "bar",
+  });
+});
+</script>
+
 <div class="container">
   <div id="torso">
     <div id="monthly"></div>
+    <div id="drivers"></div>
   </div>
 </div>
+
   </body>
 </html>
