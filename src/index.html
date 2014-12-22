@@ -117,5 +117,78 @@ function initialize() {
 }
 
     </script>
+
+<script type="text/javascript">
+// TODO: figure out how to feed it timestamps like 2014-11-01... it seemed to
+// choke on them as a string.
+
+// I generated these with some super lazy python code (note that you must
+// remove the trailing comma on the last row by hand):
+//
+// import random
+// for i in range(1, 32): print '{"day": "%s", "pizzas": %s},' % (i, random.randint(2, 20))
+var monthly_data = [
+  {"day": "1", "pizzas": 16},
+  {"day": "2", "pizzas": 16},
+  {"day": "3", "pizzas": 15},
+  {"day": "4", "pizzas": 13},
+  {"day": "5", "pizzas": 4},
+  {"day": "6", "pizzas": 8},
+  {"day": "7", "pizzas": 11},
+  {"day": "8", "pizzas": 9},
+  {"day": "9", "pizzas": 13},
+  {"day": "10", "pizzas": 11},
+  {"day": "11", "pizzas": 19},
+  {"day": "12", "pizzas": 7},
+  {"day": "13", "pizzas": 19},
+  {"day": "14", "pizzas": 18},
+  {"day": "15", "pizzas": 5},
+  {"day": "16", "pizzas": 14},
+  {"day": "17", "pizzas": 19},
+  {"day": "18", "pizzas": 20},
+  {"day": "19", "pizzas": 9},
+  {"day": "20", "pizzas": 8},
+  {"day": "21", "pizzas": 8},
+  {"day": "22", "pizzas": 5},
+  {"day": "23", "pizzas": 8},
+  {"day": "24", "pizzas": 17},
+  {"day": "25", "pizzas": 4},
+  {"day": "26", "pizzas": 17},
+  {"day": "27", "pizzas": 4},
+  {"day": "28", "pizzas": 8},
+  {"day": "29", "pizzas": 20},
+  {"day": "30", "pizzas": 2},
+  {"day": "31", "pizzas": 13}
+];
+
+$(function(){
+  data_graphic({
+    title: "Daily Sales - November",
+    description: "How many pizzas were sold every day.",
+    data: monthly_data,
+    markers: [
+      {"day": 18, "label": "highest"},
+      {"day": 30, "label": "lowest"},
+    ],
+    target: "#monthly",
+    x_accessor: "day",
+    y_accessor: "pizzas",
+    interpolate: "monotone",
+    x_label: "Day of Month",
+    y_label: "# of Pizzas",
+    height: 300,
+    width: 450,
+    buffer: 4,
+    bottom: 60,
+    left: 70,
+  });
+});
+</script>
+
+<div class="container">
+  <div id="torso">
+    <div id="monthly"></div>
+  </div>
+</div>
   </body>
 </html>
